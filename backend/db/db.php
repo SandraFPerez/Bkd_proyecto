@@ -2,8 +2,8 @@
 try {
     // Datos de conexión
     $host = 'localhost'; // O 'oracle-db' si accedes desde otro contenedor
-    $port = 1522;
-    $service = 'orclpdb'; // Nombre del Pluggable Database
+    $port = 1521;
+    $service = 'oraclepdb'; // Nombre del Pluggable Database
     $username = 'SYSTEM'; // Cambiar si usas otro usuario
     $password = '123456'; // Contraseña configurada en Docker
 

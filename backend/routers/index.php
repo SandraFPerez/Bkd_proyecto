@@ -1,37 +1,48 @@
 <?php
-// Rutas del sistema
+require_once '../controllers/RentaController.php';
+require_once '../controllers/FacturaController.php';
+require_once '../controllers/AuditoriaController.php';
 
-include_once '../controllers/reserva.php';
-include_once '../controllers/facturacion.php';
-include_once '../controllers/auditoria.php';
+header('Content-Type: application/json');
 
-// Ruta para registrar una reserva
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'registrar_reserva') {
-    $id_vehiculo = $_POST['id_vehiculo'];
-    $id_cliente = $_POST['id_cliente'];
-    $fecha_inicio = $_POST['fecha_inicio'];
-    $fecha_fin = $_POST['fecha_fin'];
-    
-    registrarReserva($id_vehiculo, $id_cliente, $fecha_inicio, $fecha_fin);
-    echo 'Reserva registrada correctamente';
-}
+$method = $_SERVER['REQUEST_METHOD'];
+$endpoint = $_GET['endpoint'];
 
-// Ruta para generar una factura
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'generar_factura') {
-    $id_renta = $_POST['id_renta'];
-    
-    generarFactura($id_renta);
-    echo 'Factura generada correctamente';
-}
+switch ($endpoint) {
+    case 'registrarRenta':
+        if ($method === 'POST') {
+            $data = json_decode(file_get_contents('php://input'), true);
+            $controller = new RentaController();
+            $response = $controller->registrarRenta(
+                $data['idVehiculo'],
+                $data['idCliente'],
+                $data['fechaInicio'],
+                $data['fechaFin']
+            );
+            echo json_encode($response);
+        }
+        break;
 
-// Ruta para registrar una auditoría (opcional para uso manual)
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'registrar_auditoria') {
-    $tabla_afectada = $_POST['tabla_afectada'];
-    $operacion = $_POST['operacion'];
-    $registro_id = $_POST['registro_id'];
-    $usuario = $_POST['usuario'];
+    case 'generarFactura':
+        if ($method === 'POST') {
+            $data = json_decode(file_get_contents('php://input'), true);
+            $controller = new FacturaController();
+            $response = $controller->generarFactura($data['idRenta']);
+            echo json_encode($response);
+        }
+        break;
 
-    registrarAuditoria($tabla_afectada, $operacion, $registro_id, $usuario);
-    echo 'Auditoría registrada correctamente';
+    case 'obtenerAuditorias':
+        if ($method === 'GET') {
+            $controller = new AuditoriaController();
+            $response = $controller->obtenerAuditorias();
+            echo json_encode($response);
+        }
+        break;
+
+    default:
+        http_response_code(404);
+        echo json_encode(["message" => "Endpoint no encontrado"]);
+        break;
 }
 ?>

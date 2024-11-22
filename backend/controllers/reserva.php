@@ -1,47 +1,28 @@
 <?php
-include_once '../db/db.php';
+require_once '../db/db.php';
 
-// Registrar reserva
-function registrarReserva($id_vehiculo, $id_cliente, $fecha_inicio, $fecha_fin) {
-    global $conn;
-    try {
-        // Iniciar transacción
-        $conn->beginTransaction();
+class RentaController {
+    private $db;
 
-        // Verificar disponibilidad del vehículo
-        $stmt = $conn->prepare("SELECT estado FROM vehiculo WHERE id_vehiculo = :id_vehiculo");
-        $stmt->execute(['id_vehiculo' => $id_vehiculo]);
-        $vehiculo = $stmt->fetch(PDO::FETCH_ASSOC);
+    public function __construct() {
+        $this->db = (new Database())->getConnection();
+    }
 
-        if ($vehiculo['estado'] !== 'DISPONIBLE') {
-            throw new Exception('El vehículo no está disponible.');
+    public function registrarRenta($idVehiculo, $idCliente, $fechaInicio, $fechaFin) {
+        $sql = "BEGIN registrar_reserva(:idVehiculo, :idCliente, :fechaInicio, :fechaFin); END;";
+        $stmt = oci_parse($this->db, $sql);
+
+        oci_bind_by_name($stmt, ":idVehiculo", $idVehiculo);
+        oci_bind_by_name($stmt, ":idCliente", $idCliente);
+        oci_bind_by_name($stmt, ":fechaInicio", $fechaInicio);
+        oci_bind_by_name($stmt, ":fechaFin", $fechaFin);
+
+        if (!oci_execute($stmt)) {
+            $error = oci_error($stmt);
+            return ["success" => false, "message" => $error['message']];
         }
 
-        // Insertar reserva
-        $stmt = $conn->prepare("INSERT INTO reserva (id_vehiculo, id_cliente, fecha_inicio, fecha_fin) 
-                               VALUES (:id_vehiculo, :id_cliente, :fecha_inicio, :fecha_fin)");
-        $stmt->execute([
-            'id_vehiculo' => $id_vehiculo,
-            'id_cliente' => $id_cliente,
-            'fecha_inicio' => $fecha_inicio,
-            'fecha_fin' => $fecha_fin
-        ]);
-
-        // Actualizar estado del vehículo
-        $stmt = $conn->prepare("UPDATE vehiculo SET estado = 'RESERVADO' WHERE id_vehiculo = :id_vehiculo");
-        $stmt->execute(['id_vehiculo' => $id_vehiculo]);
-
-        // Registrar en auditoría
-        $stmt = $conn->prepare("INSERT INTO auditoria (tabla_afectada, operacion, registro_id, usuario, fecha_operacion) 
-                               VALUES ('reserva', 'INSERT', :id_vehiculo, :usuario, SYSDATE)");
-        $stmt->execute(['id_vehiculo' => $id_vehiculo, 'usuario' => $_SESSION['user']]);
-
-        // Confirmar transacción
-        $conn->commit();
-    } catch (Exception $e) {
-        // Revertir en caso de error
-        $conn->rollBack();
-        echo 'Error: ' . $e->getMessage();
+        return ["success" => true, "message" => "Renta registrada correctamente."];
     }
 }
 ?>

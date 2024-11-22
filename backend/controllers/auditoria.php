@@ -1,20 +1,24 @@
 <?php
-include_once '../db/db.php';
+require_once '../db/db.php';
 
-// Registrar acción en auditoría
-function registrarAuditoria($tabla_afectada, $operacion, $registro_id, $usuario) {
-    global $conn;
-    try {
-        $stmt = $conn->prepare("INSERT INTO auditoria (tabla_afectada, operacion, registro_id, usuario, fecha_operacion) 
-                               VALUES (:tabla_afectada, :operacion, :registro_id, :usuario, SYSDATE)");
-        $stmt->execute([
-            'tabla_afectada' => $tabla_afectada,
-            'operacion' => $operacion,
-            'registro_id' => $registro_id,
-            'usuario' => $usuario
-        ]);
-    } catch (Exception $e) {
-        echo 'Error: ' . $e->getMessage();
+class AuditoriaController {
+    private $db;
+
+    public function __construct() {
+        $this->db = (new Database())->getConnection();
+    }
+
+    public function obtenerAuditorias() {
+        $sql = "SELECT * FROM auditoria ORDER BY fecha_hora DESC";
+        $stmt = oci_parse($this->db, $sql);
+        oci_execute($stmt);
+
+        $auditorias = [];
+        while ($row = oci_fetch_assoc($stmt)) {
+            $auditorias[] = $row;
+        }
+
+        return $auditorias;
     }
 }
 ?>

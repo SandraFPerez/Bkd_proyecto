@@ -1,0 +1,21 @@
+version: "3.8"
+
+services:
+  oracle-db:
+    image: gvenzl/oracle-xe:latest  # Imagen de Oracle Database XE
+    container_name: oracle-db
+
+    ports:
+      - "5500:5500"  # Puerto para Oracle EM (Enterprise Manager)
+      - "1522:1521"  # Puerto para SQL*Net
+      
+    environment:
+      ORACLE_PASSWORD: 123456       # Configura la contraseña de SYS y SYSTEM
+      ORACLE_PDB: orclpdb                 # Nombre del Pluggable Database (PDB)
+      ORACLE_CHARACTERSET: AL32UTF8       # Configura el juego de caracteres
+    volumes:
+      - oracle_data:/opt/oracle/oradata   # Volumen para persistencia de datos
+      
+
+volumes:
+  oracle_data:

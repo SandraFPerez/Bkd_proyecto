@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión</title>
+    <script src="scripts.js" defer></script>
+</head>
+<body>
+    <h1>Gestión de Entidades</h1>
+    
+    <!-- Gestión de Vehículos -->
+    <section id="vehiculos">
+        <h2>Vehículos</h2>
+        <form id="vehiculos-form">
+            <input type="text" name="id_vehiculo" placeholder="ID Vehículo" required>
+            <input type="text" name="modelo" placeholder="Modelo" required>
+            <input type="text" name="marca" placeholder="Marca" required>
+            <input type="text" name="estado" placeholder="Estado (DISPONIBLE, RENTADO)" required>
+            <button type="button" onclick="submitVehiculo()">Registrar Vehículo</button>
+        </form>
+        <table id="vehiculos-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Modelo</th>
+                    <th>Marca</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Datos dinámicos -->
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Gestión de Usuarios -->
+    <section id="usuarios">
+        <h2>Usuarios</h2>
+        <form id="usuarios-form">
+            <input type="text" name="id_usuario" placeholder="ID Usuario" required>
+            <input type="text" name="nombre" placeholder="Nombre" required>
+            <input type="text" name="rol" placeholder="Rol (ADMIN, USUARIO)" required>
+            <button type="button" onclick="submitUsuario()">Registrar Usuario</button>
+        </form>
+        <table id="usuarios-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Rol</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Datos dinámicos -->
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Gestión de Empleados -->
+    <section id="empleados">
+        <h2>Empleados</h2>
+        <form id="empleados-form">
+            <input type="text" name="id_empleado" placeholder="ID Empleado" required>
+            <input type="text" name="nombre" placeholder="Nombre" required>
+            <input type="text" name="puesto" placeholder="Puesto" required>
+            <button type="button" onclick="submitEmpleado()">Registrar Empleado</button>
+        </form>
+        <table id="empleados-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Puesto</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Datos dinámicos -->
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Gestión de Clientes -->
+    <section id="clientes">
+        <h2>Clientes</h2>
+        <form id="clientes-form">
+            <input type="text" name="id_cliente" placeholder="ID Cliente" required>
+            <input type="text" name="nombre" placeholder="Nombre" required>
+            <input type="text" name="telefono" placeholder="Teléfono" required>
+            <button type="button" onclick="submitCliente()">Registrar Cliente</button>
+        </form>
+        <table id="clientes-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Teléfono</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Datos dinámicos -->
+            </tbody>
+        </table>
+    </section>
+</body>
+</html>
