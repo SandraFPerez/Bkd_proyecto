@@ -1,10 +1,10 @@
 <?php
 try {
     // Datos de conexión
-    $host = 'localhost'; // O 'oracle-db' si accedes desde otro contenedor
-    $port = 1521;
-    $service = 'oraclepdb'; // Nombre del Pluggable Database
-    $username = 'SYSTEM'; // Cambiar si usas otro usuario
+    $host = 'localhost';  // Usar el nombre del contenedor en lugar de localhost
+    $port = 1522;         // El puerto estándar de Oracle (no 1522 en este caso)
+    $service = 'XE'; // Nombre del Pluggable Database (PDB)
+    $username = 'SYSTEM'; // Usuario de conexión
     $password = '123456'; // Contraseña configurada en Docker
 
     // Cadena de conexión para Oracle
@@ -15,6 +15,9 @@ try {
 
     // Configuración adicional (opcional)
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    $db = $pdo; // Define $db si es necesario
+
 
     echo "Conexión exitosa a la base de datos Oracle.";
 } catch (PDOException $e) {

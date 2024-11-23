@@ -1,5 +1,6 @@
 <?php
-include '../db/db.php';
+require_once ('../routers/cors.php');
+require_once '../db/db.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);

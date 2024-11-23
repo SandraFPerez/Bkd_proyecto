@@ -54,53 +54,68 @@
         th {
             background-color: #f4f4f4;
         }
+
+        /* Estilos para ocultar el contenido */
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
 
     <h1>Gestión de Renta</h1>
 
-    <!-- Registrar Renta -->
-    <div class="form-container">
-        <h3>Registrar Renta</h3>
-        <form id="rentaForm">
-            <input type="text" id="idVehiculo" placeholder="ID Vehículo" required>
-            <input type="text" id="idCliente" placeholder="ID Cliente" required>
-            <input type="date" id="fechaInicio" required>
-            <input type="date" id="fechaFin" required>
-            <button type="submit">Registrar Renta</button>
-        </form>
-    </div>
 
-    <!-- Generar Factura -->
-    <div class="form-container">
-        <h3>Generar Factura</h3>
-        <form id="facturaForm">
-            <input type="text" id="idRenta" placeholder="ID Renta" required>
-            <button type="submit">Generar Factura</button>
-        </form>
-    </div>
 
-    <!-- Ver Auditorías -->
-    <div class="form-container">
-        <h3>Registro de Auditorías</h3>
-        <button id="fetchAuditorias">Ver Auditorías</button>
-        <table id="auditoriasTable">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Acción</th>
-                    <th>Usuario</th>
-                    <th>Fecha y Hora</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Las auditorías se insertarán aquí dinámicamente -->
-            </tbody>
-        </table>
+    <!-- Contenido Principal (oculto por defecto) -->
+    <div id="mainContent" >
+
+        <!-- Registrar Renta -->
+        <div class="form-container">
+            <h3>Registrar Renta</h3>
+            <form id="rentaForm">
+                <input type="text" id="idVehiculo" placeholder="ID Vehículo" required>
+                <input type="text" id="idCliente" placeholder="ID Cliente" required>
+                <input type="date" id="fechaInicio" required>
+                <input type="date" id="fechaFin" required>
+                <button type="submit">Registrar Renta</button>
+            </form>
+        </div>
+
+        <!-- Generar Factura -->
+        <div class="form-container">
+            <h3>Generar Factura</h3>
+            <form id="facturaForm">
+                <input type="text" id="idRenta" placeholder="ID Renta" required>
+                <button type="submit">Generar Factura</button>
+            </form>
+        </div>
+
+        <!-- Ver Auditorías -->
+        <div class="form-container">
+            <h3>Registro de Auditorías</h3>
+            <button id="fetchAuditorias">Ver Auditorías</button>
+            <table id="auditoriasTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Acción</th>
+                        <th>Usuario</th>
+                        <th>Fecha y Hora</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Las auditorías se insertarán aquí dinámicamente -->
+                </tbody>
+            </table>
+        </div>
+
     </div>
 
     <script>
+        // Función para manejar el login
+
+
         // Función para registrar una renta
         document.getElementById('rentaForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -138,7 +153,7 @@
 
         // Función para obtener auditorías
         document.getElementById('fetchAuditorias').addEventListener('click', function() {
-            fetch('http://localhost:8000/routes/index.php?endpoint=obtenerAuditorias')
+            fetch('http://localhost:8000/Bkd_proyecto/backend/routers/index.php?endpoint=obtenerAuditorias')
             .then(response => response.json())
             .then(data => {
                 const tableBody = document.getElementById('auditoriasTable').querySelector('tbody');

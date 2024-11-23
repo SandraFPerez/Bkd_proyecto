@@ -25,7 +25,7 @@ function generar_factura(){
 }
 
 function obtener_auditoria(){
-    fetch('http://localhost:8000/routes/index.php?endpoint=obtenerAuditorias')
+    fetch('http://localhost:8000/Bkd_proyecto/backend/routers/index.php?endpoint=obtenerAuditorias')
     .then(response => response.json())
     .then(data => console.log(data));
 }
